@@ -9,6 +9,14 @@ stages:
   steps:
   - applyYamlConfig:
       path: ./deployment.yaml
+    env:
+      ALLOWED_HOSTS: '*'
+      CACHE_AXES: redis.default.svc.cluster.local:6379/0
+      CACHE_DEFAULT: redis.default.svc.cluster.local:6379/0
+      DJANGO_SETTINGS_MODULE: openzaak.conf.docker
+      IS_HTTPS: "no"
+      SECRET_KEY: ${SECRET_KEY:-7(h1r2hk)8z9+05edulo_3qzymwbo&c24=)qz7+_@3&2sp=u%i}
+      SUBPATH: ${SUBPATH:-/}
 timeout: 45
 branch:
   include:
