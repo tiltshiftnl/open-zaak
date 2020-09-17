@@ -1,0 +1,36 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: open-zaak-service
+spec:
+  selector:
+    app: open-zaak-service
+  type: NodePort
+  ports:
+    - protocol: TCP
+      port: 8000
+      targetPort: 8000
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: miro-icon-drag-drop
+  labels:
+    app: open-zaak-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: open-zaak-service
+  template:
+    metadata:
+      labels:
+        app: open-zaak-service
+    spec:
+      imagePullSecrets:
+      - name: pipeline-docker-registry
+      containers:
+      - name: open-zaak-service
+        image: ${CICD_IMAGE}:${CICD_EXECUTION_SEQUENCE}
+        ports:
+        - containerPort: 80
